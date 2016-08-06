@@ -9,6 +9,7 @@ if($MODE=="do_it"):
 
 $form["name"]        =form_input("name",$name," id='name'  placeholder='nombre'" );
 $form["main_module"] =form_dropdown('main_module',$sys["forms_fields"]["main_modules"],(!empty($main_module)?$main_module:""),"id='main_module' style='float:left'");
+$form["description"]  =form_textarea(array('name'=>'description', 'id'=>'description', 'rows'=>'3', 'value'=>$description,"placeholder"=>"Descripcion" ) );
 
 $txt_boton="Guardar";
 
@@ -16,6 +17,8 @@ else:
 
 $form["name"]        =$name;
 $form["main_module"] =(!empty($main_module)?$main_module:"");
+$form["description"]=!empty($description)?$description:"";  
+
 $txt_boton="Editar";
 
 endif;
@@ -40,7 +43,6 @@ endif;
 	                            <?php echo $form["name"]; ?>
 	                        </div>
 
-<?php  echo form_close();?>
 <!-- TABS -->
 					<ul class="nav nav-tabs">
 					  <li class="active"><a data-toggle="tab" href="#tab1">Html</a></li>
@@ -58,7 +60,13 @@ endif;
 		                    <?php $main_module="<div class='form-group' style='float:left'>".form_label("Menu link:").$form["main_module"]." <span style='float:left' class='add_record'></span></div>";?>
 						  	
 						  	<div id="tab1" class="tab-pane fade in active">
-								<?php echo $main_module; ?>
+								<?php //echo $main_module; ?>
+	                        <div class="form-group">
+	                            <?php echo form_label("Descripción:"); ?>
+	                            <?php echo $form["description"]; ?>
+	                        </div>
+
+
 	                        </div>
 						  	
 						  	<div id="tab2" class="tab-pane fade">
@@ -77,6 +85,8 @@ endif;
 
 	                        </div>
 	                </div>
+	                
+<?php  echo form_close();?>
 						  							                        
 	                        <div class="form-group">
 	                        	<div class="btn btn-primary" id="submit"><?php echo $txt_boton; ?></div>
@@ -102,3 +112,21 @@ endif;
 		<!-- /.row -->
 
     </div>
+
+ <script type="text/javascript">
+   $(function() {
+
+     var $editors = $('#description');
+     // var $editors = $('textarea');
+     if ($editors.length) {
+
+       $editors.each(function() {
+         var editorID = $(this).attr("id");
+         var instance = CKEDITOR.instances[editorID];
+         if (instance) { CKEDITOR.remove(instance); }
+         CKEDITOR.replace(editorID);
+       });
+     }
+
+   });
+</script>

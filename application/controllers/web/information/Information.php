@@ -78,12 +78,20 @@ class Information extends CI_Controller {
 	public function do_it($id=null,$method=null) {
 	$http_params=$_POST;
 
-	$http_params   =array(
-	"MODE"         =>"do_it",
-	"id"           =>(!empty($http_params["id"]) ?decode_id( strip_tags( $this->security->xss_clean($http_params["id"]) ) ) :""),
-	"name"         =>(!empty($http_params["name"]) ?strip_tags( $this->security->xss_clean($http_params["name"]) ):""),
+	$http_params  =array(
+	"MODE"        =>"do_it",
+	"id"          =>(!empty($http_params["id"]) ?decode_id( strip_tags( $this->security->xss_clean($http_params["id"]) ) ) :""),
+	"name"        =>(!empty($http_params["name"]) ?strip_tags( $this->security->xss_clean($http_params["name"]) ):""),
+	// "description" =>(!empty($http_params["description"]) ?strip_tags( $this->security->xss_clean($http_params["description"]) ):""),
 	);
 
+	// $description  = $_POST["description"]?:"";
+	$description  = 
+	str_replace(
+		array("&lt;iframe","&gt;","&lt;/iframe>","&lt;object","&lt;/object>","&lt;param","&lt;embed"),
+		array("<iframe",">","</iframe>","<object","</object>","<param","<embed"), 
+		$_POST["description"])?:"";
+	
 	extract($http_params);
 
 		if(!empty($id)):
@@ -96,8 +104,9 @@ class Information extends CI_Controller {
 		if($method=="informationView"){
 		
 		// Aqui almacenamos en el arreglo el cual vamos a insertar o actualizar
-			$data=array(
-			"name"=>$name,
+			$data         =array(
+			"name"        =>$name,
+			"description" =>$description,
 			);
 
 		// validar que  no exista un registro identico 

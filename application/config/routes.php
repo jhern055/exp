@@ -284,25 +284,34 @@ $route["article/tokeninput?(:any)"] ="stock/catalog/article/article/tokeninput";
 // ...
 
 // Cienevelo
-	$route["cinevelo"]          ="cinevelo/cinevelo/index";            
-	$route["cinevelo/children"] ="cinevelo/cinevelo/index"; 
+	$route["cinepixi"]          ="cinepixi/cinepixi/index";            
+	$route["cinepixi/children"] ="cinepixi/cinepixi/index"; 
 	
-	$route["cinevelo/movie"]                   ="cinevelo/movie/movie/index";            
-	$route["cinevelo/movie/children"]          ="cinevelo/movie/movie/children";            
-	$route["cinevelo/movie/movie_ajax"]        ="cinevelo/movie/movie/movie_ajax";       
-	$route["cinevelo/movie/movie_ajax/(:num)"] ="cinevelo/movie/movie/movie_ajax/$1";
-	$route["cinevelo/movie/movieView"]         ="cinevelo/movie/movie/movieView";        
-	$route["cinevelo/movie/movieView/(:num)"]  ="cinevelo/movie/movie/movieView/$1"; 
-	$route["cinevelo/movie/movie_delete"]      ="cinevelo/movie/movie/movie_delete";
+	$route["cinepixi/movie"]                   ="cinepixi/movie/movie/index";            
+	$route["cinepixi/movie/children"]          ="cinepixi/movie/movie/children";            
+	$route["cinepixi/movie/movie_ajax"]        ="cinepixi/movie/movie/movie_ajax";       
+	$route["cinepixi/movie/movie_ajax/(:num)"] ="cinepixi/movie/movie/movie_ajax/$1";
+	$route["cinepixi/movie/movieView"]         ="cinepixi/movie/movie/movieView";        
+	$route["cinepixi/movie/movieView/(:num)"]  ="cinepixi/movie/movie/movieView/$1"; 
+	$route["cinepixi/movie/movie_delete"]      ="cinepixi/movie/movie/movie_delete";
 
-	$route["cinevelo/movie/category"]                      ="cinevelo/movie/category/category/index";            
-	$route["cinevelo/movie/category/children"]             ="cinevelo/movie/category/category/children";            
-	$route["cinevelo/movie/category/category_ajax"]        ="cinevelo/movie/category/category/category_ajax";       
-	$route["cinevelo/movie/category/category_ajax/(:num)"] ="cinevelo/movie/category/category/category_ajax/$1";
-	$route["cinevelo/movie/category/categoryView"]         ="cinevelo/movie/category/category/categoryView";        
-	$route["cinevelo/movie/category/categoryView/(:num)"]  ="cinevelo/movie/category/category/categoryView/$1"; 
-	$route["cinevelo/movie/category/category_delete"]      ="cinevelo/movie/category/category/category_delete";
-	$route["cinevelo/movie/category/category_tokeninput?(:any)"] ="cinevelo/movie/category/category/category_tokeninput";            
+	$route["cinepixi/movie/category"]                      ="cinepixi/movie/category/category/index";            
+	$route["cinepixi/movie/category/children"]             ="cinepixi/movie/category/category/children";            
+	$route["cinepixi/movie/category/category_ajax"]        ="cinepixi/movie/category/category/category_ajax";       
+	$route["cinepixi/movie/category/category_ajax/(:num)"] ="cinepixi/movie/category/category/category_ajax/$1";
+	$route["cinepixi/movie/category/categoryView"]         ="cinepixi/movie/category/category/categoryView";        
+	$route["cinepixi/movie/category/categoryView/(:num)"]  ="cinepixi/movie/category/category/categoryView/$1"; 
+	$route["cinepixi/movie/category/category_delete"]      ="cinepixi/movie/category/category/category_delete";
+	$route["cinepixi/movie/category/category_tokeninput?(:any)"] ="cinepixi/movie/category/category/category_tokeninput";            
+
+	$route["cinepixi/pathFile"]                             ="cinepixi/pathFile/pathFile/index";            
+	$route["cinepixi/pathFile/children"]                    ="cinepixi/pathFile/pathFile/children";            
+	$route["cinepixi/pathFile/pathFile_ajax"]              ="cinepixi/pathFile/pathFile/pathFile_ajax";       
+	$route["cinepixi/pathFile/pathFile_ajax/(:num)"]       ="cinepixi/pathFile/pathFile/pathFile_ajax/$1";
+	$route["cinepixi/pathFile/pathFileView"]               ="cinepixi/pathFile/pathFile/pathFileView";        
+	$route["cinepixi/pathFile/pathFileView/(:num)"]        ="cinepixi/pathFile/pathFile/pathFileView/$1"; 
+	$route["cinepixi/pathFile/pathFile_delete"]            ="cinepixi/pathFile/pathFile/pathFile_delete";
+	$route["cinepixi/pathFile/pathFile_tokeninput?(:any)"] ="cinepixi/pathFile/pathFile/pathFile_tokeninput";            
 
 // ...
 // WEB web

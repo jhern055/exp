@@ -587,7 +587,7 @@ public $base_url;
                     return array('status' => 1, 'msg' => 'Se inserto en base de datos',"reload"=>true);
                 },
                 "upload_path"=>(!empty($id) ? $movie_config["path"]."$id":$tmp_dir ) ,
-                "allowed_types"=>"mpg4|mkv|avi|jpg|png",
+                "allowed_types"=>"mpg4|mkv|avi|jpg|png|mp4",
                 "max_size"=>"2000000000",
                 "fileType"=>function($file){
                     return true;
@@ -605,7 +605,7 @@ public $base_url;
                     $resolution=(!empty($_POST["resolution"])?strip_tags($this->security->xss_clean($_POST["resolution"])) :"");
                     $disk_space=(!empty($_POST["disk_space"])?strip_tags($this->security->xss_clean($_POST["disk_space"])):"");
                     
-                    $this->load->model("cinevelo/movie/movie_model");
+                    $this->load->model("cine_pixi/movie/movie_model");
 
                         $data=array(
                             "file_name"  =>$file_name,
@@ -621,7 +621,7 @@ public $base_url;
                 },
                 "delete_record"=>function ($http_params){
 
-                    $this->load->model("cinevelo/movie/movie_model");
+                    $this->load->model("cine_pixi/movie/movie_model");
 
                     if(!$this->movie_model->delete_movie_file($http_params["file_id"]))
                     return array('status' => 0, 'msg' => "Hubo un error al eliminar imagen BD","reload"=>true);

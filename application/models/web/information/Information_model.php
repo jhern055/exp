@@ -76,12 +76,13 @@ class Information_model extends CI_Model{
     public function get_information_id($id){
 
         $data=array(
-        "id"=>"",
-        "name"=>"",
-        "registred_by"=>"",
-        "registred_on"=>"",
-        "updated_by"=>"",
-        "updated_on"=>"",
+        "id"           =>"",
+        "name"         =>"",
+        "description"  =>"",
+        "registred_by" =>"",
+        "registred_on" =>"",
+        "updated_by"   =>"",
+        "updated_on"   =>"",
         );
         
     $q=$this->db->select(implode(",",array_keys($data)))

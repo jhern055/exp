@@ -3,6 +3,10 @@
     <?php echo $this->load->view($data['module_data']["link"]."dinamyc-inputs",$data,true); ?>
 </div>
 <!-- /.container-fluid -->
+<script type="text/javascript" src="<?php  echo base_url()."js/ckeditor/"; ?>ckeditor.js"></script>
+<style type="text/css">
+input{width: auto;}
+</style>
 <script>
 form = Object();
 form.submit=function(mode,item){
@@ -10,7 +14,11 @@ form.submit=function(mode,item){
 		id="<?php echo encode_id($id); ?>",
 		formData=""
 		;
-		
+
+		for (instance in CKEDITOR.instances) {
+		CKEDITOR.instances[instance].updateElement();
+		}
+
 		if(mode=="do_it")
 		formData=$("form.formBasic").serialize();
 
@@ -167,93 +175,3 @@ modal: true,
 <?php if($sessioMode=="do_it" and !empty($id)){ ?>
 <script> $(document).ready(function(){$("div#submit").focus().click(); }); </script>
 <?php } ?>
-
-<!-- OWN -->
-<script type="text/javascript">
-$(document).on("change","select#main_module",function(){
-var this_it=$(this),	
-	val_main_module=$(this).val();
-	alert(val_main_module);
-	
-	$.ajax({
-
-		url: url+"web/information/information_delete",
-		type: 'POST',
-		dataType: 'json',
-		data: {
-		id:id
-		},
-		beforeSend: function(response){
-			// ajax
-			$("input").prop("disabled",true);
-			$("button").prop("disabled",true);
-			$("div#ajax_loading").addClass("ajax_loading");
-			// ...					    	
-		},
-		success: function(response){
-
-			$("#dialog > p").text("");
-			$("#dialog > p").text(response.msg);
-			$("#dialog > p").dialog({
-			resizable: false,
-			modal: true,
-				buttons: {
-					Correcto: function() {
-
-						if(response.status)
-						{window.location.href="<?php echo base_url().'web/information/'; ?>";}
-
-						$("#dialog").append("<p></p>");
-						$(this).dialog( "close" );
-					}
-				}
-
-			});  
-
-			// ajax
-			$("input").prop("disabled",false);
-			$("button").prop("disabled",false);
-			$("div#ajax_loading").removeClass("ajax_loading");
-			// ...
-		}
-	});
-
-		// var jqueryObj=$("#client_subsidiary");
-				
-		// 		jqueryObj.children().remove();
-
-		// 		if(item.subsidiaries.length>1)
-		// 		 jqueryObj.append($("<option />").val("").text(""));
-
-		// 		$.each(item.subsidiaries,function() {
-
-		// 			jqueryObj.append($("<option />").val(this.id).text(this.name));
-
-		// 		});
-
-		// 		if(item.subsidiaries.length>1) {
-
-		// 			jqueryObj.prop("disabled",false);
-		// 			jqueryObj.get(0).focus();
-
-		// 		}
-
-		// 		if(item.subsidiaries.length==1)
-		// 		client_subsidiary_information.get(item.subsidiaries[0].id);
-		// 		else
-		// 		$(client_subsidiary_information.container).text("");
-
-});
-
-    </script>
-
-<script>
-$(document).on("click","input#main_module",function(){
-
-	var html="<?php echo $main_module;?>";
-	$(document).parent().append(html);
-
-});
-</script>
-    
-<!-- / OWN -->
