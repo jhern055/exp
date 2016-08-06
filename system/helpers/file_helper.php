@@ -459,7 +459,7 @@ if ( ! function_exists('octal_permissions'))
 */
 if ( !function_exists('move_file')) {
 
-	function move_file($source_module,$file_name,$id){
+	function move_file($source_module,$file_name,$id,$pathFile=null){
 
 		$CI=& get_instance();
 		$CI->load->model("vars_system_model");
@@ -473,7 +473,10 @@ if ( !function_exists('move_file')) {
               	),
               "article_image"=>array(
                  "path"=>APPPATH.$sys["storage"]["article"]["article_image"]
-              	),              
+              	),  
+              "movie"=>array(
+                 "path"=>APPPATH.$pathFile
+              	),             
 			);
 
 		if(!is_dir($process[$source_module]["path"]."$id"))

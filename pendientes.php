@@ -1,6 +1,7 @@
 <!--  -->
 <?php 
 Dana2012.uza4C3R0HP
++52 1 81 2434 8439
 TRUNCATE `article`;
 TRUNCATE `client`;
 TRUNCATE `client_subsidiary`;
