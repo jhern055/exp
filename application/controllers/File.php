@@ -256,10 +256,17 @@ public $base_url;
     // $tmp_dir=$_SERVER['DOCUMENT_ROOT']."/".$sys["storage_tmp"];
     // .....
 
-    if(!is_dir($sys["storage_tmp"]))
-    mkdir($sys["storage_tmp"], 0777);
+    // $tmp_dir="/".$sys["storage_tmp"];
+    $tmp_dir=$_SERVER['DOCUMENT_ROOT']."/".$sys["storage_tmp"];
+    if(!is_dir($tmp_dir))
+    mkdir($tmp_dir, 0777);
 
-    $tmp_dir=$sys["storage_tmp"];
+    // return print_r(json_encode($response));
+
+    // if(!is_dir($sys["storage_tmp"]))
+    // mkdir($sys["storage_tmp"], 0777);
+
+    // $tmp_dir=$sys["storage_tmp"];
     // configuration by module
 
     // shcp_file
@@ -281,10 +288,20 @@ public $base_url;
         "path"=>$sys["storage"]["article"]["article_image"],
         );
 
+
+    if(!empty($_POST["pathFile"])){
+
+    $pathFile_movie_id=strip_tags($this->security->xss_clean($_POST["pathFile"]));
+    $this->load->model("cinepixi/pathFile/pathFile_model");
+    $pathFileMovie=$this->pathFile_model->get_pathFile_id($pathFile_movie_id);
+
+    }
+
     $movie_config=array(
         "path"=>$sys["storage"]["movie"],
+        "pathFileMovie"=>$pathFileMovie,
         );
-    
+
     $config=array(
             "shcp_file"=>array(
                 "ajax"=>1, // cuidado con este porque si copias y pegas este arra() y tu proceso no es por ajax  te retornara en print_r(json_encode( array() ));
@@ -576,17 +593,17 @@ public $base_url;
                 "process"=>encode_id("movie"),
                 "path_storage"=>$movie_config["path"],
                 "image_lib"=>1, // TRATAMIENTO DE IMAGEN
-                "make_dir"=>function ($id,$shcp_file_config){
+                "make_dir"=>function ($id,$movie_config){
 
-                    if(!empty($id) and !is_dir($shcp_file_config["path"]."$id"))
-                     mkdir($shcp_file_config["path"]."$id", 0777, true);
+                    if(!is_dir($movie_config["upload_path"]))
+                     mkdir($movie_config["upload_path"], 0777, true);
                     
                     return array('status' => 1, 'msg' => 'Creado el directorio',"reload"=>true);
                 },
                 "additional_process"=>function ($upload_data){
                     return array('status' => 1, 'msg' => 'Se inserto en base de datos',"reload"=>true);
                 },
-                "upload_path"=>(!empty($id) ? $movie_config["path"]."$id":$tmp_dir ) ,
+                "upload_path"=>( (!empty($pathFileMovie["name"]) and $id )?$pathFileMovie["name"]:$tmp_dir ) ,
                 "allowed_types"=>"mpg4|mkv|avi|jpg|png|mp4",
                 "max_size"=>"2000000000",
                 "fileType"=>function($file){
@@ -602,15 +619,16 @@ public $base_url;
                 
                 "insert_file_record"=>function ($id,$upload_data,$movie_config,$file){
                     $file_name=strip_tags($this->security->xss_clean($upload_data["file_name"]) );
+                    $pathFile_movie_id=strip_tags($this->security->xss_clean($_POST["pathFile"]) );
                     $resolution=(!empty($_POST["resolution"])?strip_tags($this->security->xss_clean($_POST["resolution"])) :"");
                     $disk_space=(!empty($_POST["disk_space"])?strip_tags($this->security->xss_clean($_POST["disk_space"])):"");
                     
-                    $this->load->model("cine_pixi/movie/movie_model");
+                    $this->load->model("cinepixi/movie/movie_model");
 
                         $data=array(
                             "file_name"  =>$file_name,
                             "resolution" =>$resolution,
-                            "path"       =>$disk_space,
+                            "path"       =>$pathFile_movie_id,
                             "movie_id"   =>$id
                             ); 
 
@@ -621,7 +639,7 @@ public $base_url;
                 },
                 "delete_record"=>function ($http_params){
 
-                    $this->load->model("cine_pixi/movie/movie_model");
+                    $this->load->model("cinepixi/movie/movie_model");
 
                     if(!$this->movie_model->delete_movie_file($http_params["file_id"]))
                     return array('status' => 0, 'msg' => "Hubo un error al eliminar imagen BD","reload"=>true);
@@ -660,7 +678,7 @@ public $base_url;
     $http_params=array_merge($_GET,$_POST);
     $http_params   =array(
     "process"=>(!empty($http_params["process"]) ? strip_tags( $this->security->xss_clean( decode_id($http_params["process"]) ) ) :""),
-    "id"=>(!empty($http_params["id"]) ? strip_tags( $this->security->xss_clean( decode_id($http_params["id"]) ) ) :""),
+    "id"=>(!empty($http_params["id"]) ? strip_tags( $this->security->xss_clean( decode_id($http_params["id"]) ) ) :0),
     "file_name"=>(!empty($http_params["file_name"]) ? strip_tags( $this->security->xss_clean( decode_id($http_params["file_name"]) ) ) :""),
     "file"=>(!empty($http_params["file"]) ? strip_tags( $this->security->xss_clean( decode_id( $http_params["file"]) ) ) :""),
     );
@@ -686,6 +704,7 @@ public $base_url;
     } 
 
     // print_r(json_encode($functionConfig[$process]));
+
 
 // configuracion para subir imagen
     $config['upload_path']   = $functionConfig[$process]["upload_path"];
