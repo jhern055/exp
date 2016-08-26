@@ -64,10 +64,7 @@ endif;
 	                            <?php echo form_label("Categoria:"); ?>
 	                            <?php echo $form["category_id"]; ?>
 	                        </div>	
-	                        <div class="form-group">
-	                            <?php echo form_label("Path File:"); ?>
-	                            <?php echo $form["pathFile"]; ?>
-	                        </div>		                                                
+		                                                
 	                        <div class="form-group">
 	                            <?php echo form_label("Resolución"); ?>
 	                            <?php echo $form["resolution"]; ?>
@@ -107,7 +104,11 @@ endif;
 
 						                <div class="imUp">
 						                        <?php echo form_open(base_url().'file/doUploadFile/?process='.encode_id("movie")."&id=".encode_id($id),$movie); ?>   
-						                   
+	                        
+	                        <div class="form-group">
+	                            <?php echo form_label("Path File:"); ?>
+	                            <?php echo $form["pathFile"]; ?>
+	                        </div>						                   
 
 						                    <div class="upload">
 						                        <?php echo form_upload($data_file); ?>
@@ -235,9 +236,9 @@ $(document).ready(function(){
                     +'<\/tr>'
                     +'</table>';
 
-            return $(tr);
+            // return $(tr);
         },
-        // parseResponse: function (file) {console.log(file);},
+        parseResponse: function (file) {console.log(file);},
 
     });
 
