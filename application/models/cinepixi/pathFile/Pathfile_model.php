@@ -142,7 +142,7 @@ class Pathfile_model extends CI_Model{
 
     public function get_cinepixi_pathFile_to_option($flip=null,$id){
 
-    $data=array(0=>"Seleccione un Padre");
+    // $data=array(0=>"Seleccione un Padre");
     $this->db->select('id,name');
 
     if(!empty($id))
@@ -159,7 +159,9 @@ class Pathfile_model extends CI_Model{
         $data[$row["id"]]=$row["name"];
     }
     return $data;
+
     }
+
 
 }
 ?>

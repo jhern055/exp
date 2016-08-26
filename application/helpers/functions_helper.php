@@ -30,12 +30,12 @@ if ( ! function_exists('shell_exec_function')){
 
 	    if (!function_exists("ssh2_connect")) die("function ssh2_connect doesn't exist");
 
-	    // log in at server1.example.com on port 22
-	    if(!($con = ssh2_connect("localhost", 22))){
+	    // log in at server1.example.com on port 2222
+	    if(!($con = ssh2_connect("localhost", 2222))){
 	        echo "fail: unable to establish connection\n";
 	    } else {
 	        // try to authenticate with username root, password secretpassword
-	        if(!ssh2_auth_password($con, "root", "123456")) {
+	        if(!ssh2_auth_password($con, "root", "Plex2016.,")) {
 	            echo "fail: unable to authenticate\n";
 	        } else {
 	            // allright, we're in!
