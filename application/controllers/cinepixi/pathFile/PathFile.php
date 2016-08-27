@@ -209,7 +209,7 @@ class PathFIle extends CI_Controller {
 
 	// carga normal
 	public function index() {
-		
+	
 	$data=$this->pathFile_ajax();
 
 	$this->session->set_userdata("idTemp");
@@ -218,6 +218,17 @@ class PathFIle extends CI_Controller {
 
 	// if(!empty($this->page) and !empty($data["records_array"]))
 	// $this->session->set_userdata('record_start_row_pathFile',$this->page);
+
+
+	$this->load->model("cinepixi/pathFile/pathFile_model");
+	foreach ($data["sys"]["config"]["movie_path"] as $ka =>$rowa ):
+	    // $paths[$rowa]=$this->movie_model->dirToArray_sync($rowa);
+	    // 
+	    // $paths[$rowa]=dirToArray($rowa);
+	    $response=$this->pathFile_model->pathFile_PATHS($rowa);
+	pr($response);
+
+	endforeach;
 
 	if(!empty($_POST["ajax"]))
 	return print_r(json_encode(array("status"=>1,"msg"=>"HtmlConExito","html"=>$this->load->view("cinepixi/pathFile/pathFile_view",$data,true) ))) ;

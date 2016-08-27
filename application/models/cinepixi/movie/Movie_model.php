@@ -176,7 +176,7 @@ class Movie_model extends CI_Model{
     $data=array("id"=>0);
     $q=$this->db->select("id")
                 ->where("name",$name)
-                ->from("movie_category")
+                ->from("cinepixi_movie_category")
                 ->get();
 
         foreach ($q->result_array() as $key => $value)
@@ -186,7 +186,7 @@ class Movie_model extends CI_Model{
     }
     public function insert_movie_category($data){
 
-    $this->db->insert("movie_category",$data);
+    $this->db->insert("cinepixi_movie_category",$data);
         
     return $this->db->insert_id();;
     }
@@ -208,6 +208,7 @@ class Movie_model extends CI_Model{
 
                 if( $name=end($before) and $name!="DATA");
                 $parentid=$this->select_movie_category($name);
+                
                 }
 
                     $data=array("name"=>$value,"parentid" =>$parentid);
@@ -222,7 +223,7 @@ class Movie_model extends CI_Model{
             
             }
         }
-        // pr($k);
+
    return $k; 
 
     } 

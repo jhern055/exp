@@ -161,7 +161,31 @@ class Pathfile_model extends CI_Model{
     return $data;
 
     }
+ 
+ // <OWN>
+    public function pathFile_PATHS($dir) { 
+        
+        $k=array();
 
+        $cdir = scandir($dir); 
+        foreach ($cdir as $key => $value) {
+            if (!in_array($value,array(".",".."))) {
+
+                if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
+
+                    $k[$value]=$this->pathFile_PATHS($dir . DIRECTORY_SEPARATOR . $value);
+                }else{
+                    
+                    $k[] = $value; 
+                }
+            
+            }
+        }
+
+   return $k; 
+
+    } 
+ // </ OWN>
 
 }
 ?>
