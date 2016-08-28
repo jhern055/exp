@@ -365,13 +365,18 @@ foreach($_SESSION["paths"] as $path){
 
 	if( isset($_GET["request"]["name"]) ){
 	$name =strip_tags( $this->security->xss_clean( $_GET["request"]["name"] )?:"" );
+	if(preg_match('/[0-9]/', $_GET["request"]["name"]))
+	$var_name="\$this->db->where('id', ".$name.");";
+	else
 	$var_name="\$this->db->like('name', \"".$name."\");";
+
 	$data=$this->pathFile_model->get_cinepixi_pathFile_token_search($var_name);
+
 	}
 
+	// return print_r( json_encode(array(gettype($_GET["request"]["name"]))));
 	return print_r( json_encode($data));
 
 	}
-
 
 }

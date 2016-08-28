@@ -7,7 +7,8 @@ if($MODE=="do_it"):
 
 $form["name"]        =form_input("name",$name," id='name'  placeholder='nombre'" );
 $form["category_id"] =form_input("category_id",$category_id," id='category_id'  placeholder='categoria'" );
-$form["pathFile"] =form_dropdown('pathFile', $pathFile_array, "var");
+$form["pathFile_id"] =form_input("pathFile_id",$pathFile_id," id='pathFile_id'  placeholder='Path'" );
+// $form["pathFile"] =form_dropdown('pathFile', $pathFile_array, "var");
 $form["resolution"]=form_dropdown('resolution',$sys["forms_fields"]["resolution"],null,"id='resolution'");
 
 $add_other = array(
@@ -107,7 +108,7 @@ endif;
 	                        
 	                        <div class="form-group">
 	                            <?php echo form_label("Path File:"); ?>
-	                            <?php echo $form["pathFile"]; ?>
+	                            <?php echo $form["pathFile_id"]; ?>
 	                        </div>						                   
 
 						                    <div class="upload">
@@ -157,7 +158,13 @@ endif;
 		noResultsText:"no hubo coincidencias",
 		searchingText:"buscando...",
 		tokenLimit:1,
+		resultsFormatter:function(item){
+			// console.log(item);
+			return  "<li>"
+						+item.id+" - "+item.name
+					+"</li>";
 
+		},
 		<?php if(($MODE=="do_it") and !empty($category_id) ): ?>
 			prePopulate:[
 				{id:<?php echo json_encode($category_id); ?>,name:<?php echo json_encode( (!empty($category_id)?array_search($category_id, array_flip($movie_categories) ) :'' ) ); ?>,},
@@ -309,4 +316,28 @@ var url="<?php echo base_url(); ?>",
 	});
 
 });
+</script>
+
+<script>
+    // TOKEN INPUT DEL PROVEEDOR
+    $("#pathFile_id").tokenInput("<?php echo base_url().'cinepixi/pathFile/pathFile_tokeninput'; ?>", {
+        queryParam:"request[name]",
+		hintText:"escribe para buscar coincidencias",
+		noResultsText:"no hubo coincidencias",
+		searchingText:"buscando...",
+		tokenLimit:1,
+		resultsFormatter:function(item){
+			return  "<li>"
+						+item.id+" - "+item.name
+					+"</li>";
+
+		},
+		<?php if(($MODE=="do_it") and !empty($pathFile_id) ): ?>
+			prePopulate:[
+				{id:<?php echo json_encode($pathFile_id); ?>,name:<?php echo json_encode( (!empty($pathFile_id)?array_search($pathFile_id, array_flip($movie_categories) ) :'' ) ); ?>,},
+			],
+		<?php endif; ?>
+
+    });
+
 </script>

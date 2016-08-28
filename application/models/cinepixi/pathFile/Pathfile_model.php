@@ -139,7 +139,13 @@ class Pathfile_model extends CI_Model{
 
     if($q=$this->db->get())
     $data =$q->result_array();
-
+    // $data_pre =$q->result_array();
+    
+    if(!empty($data))
+    foreach ($data as $k=>&$value):
+        $data[$k]["name"]=str_replace(array("\\ ","\\"), " ", $value["name"]);
+    endforeach;
+    
     return $data;
 
     }
@@ -199,8 +205,8 @@ class Pathfile_model extends CI_Model{
         $ac=true;    
 
         return $ac;
-    }
-        
+    }  
+    
  // </ OWN>
 
 }

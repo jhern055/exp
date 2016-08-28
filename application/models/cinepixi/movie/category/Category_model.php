@@ -125,7 +125,7 @@ class Category_model extends CI_Model{
     public function get_cinepixi_category_token_search($var_name=null){
 
     $data=array();
-    $this->db->select('id,name');
+    $this->db->select('*');
     $this->db->from('cinepixi_movie_category');
     $this->db->order_by('id','desc');
 

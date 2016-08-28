@@ -97,3 +97,10 @@ ALTER TABLE `opening_balance_payments`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
   ALTER TABLE `opening_balance` ADD `sub_total_discount` DOUBLE NOT NULL AFTER `sub_total`, ADD `payment` DOUBLE NOT NULL AFTER `sub_total_discount`, ADD `discount` DOUBLE NOT NULL AFTER `payment`;
+
+
+
+
+
+-- LOCAL
+ALTER TABLE  `cinepixi_movie` ADD  `pathFile_id` INT NOT NULL AFTER  `category_id` ;

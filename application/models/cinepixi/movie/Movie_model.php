@@ -77,6 +77,7 @@ class Movie_model extends CI_Model{
         "id"          =>"",
         "name"        =>"",
         "category_id" =>"",
+        "pathFile_id" =>"",
         );
         
     $q=$this->db->select(implode(",", array_keys($data)))
