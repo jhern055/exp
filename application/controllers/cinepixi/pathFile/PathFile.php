@@ -219,16 +219,38 @@ class PathFIle extends CI_Controller {
 	// if(!empty($this->page) and !empty($data["records_array"]))
 	// $this->session->set_userdata('record_start_row_pathFile',$this->page);
 
+// <OWN>
+$_SESSION["paths"]="";
+function getDirectoryTree( $outerDir , $x){ 
+    $dirs = array_diff( scandir( $outerDir ), Array( ".", ".." ) ); 
+    $dir_array = Array(); 
+    foreach( $dirs as $d ){ 
+        if( is_dir($outerDir."/".$d)  ){ 
+        	$_SESSION["paths"][$d]=str_replace(" ", "\\ ", $outerDir."/".$d);
+            $dir_array[ $d ] = getDirectoryTree( $outerDir."/".$d , $x); 
+        }else{ 
+         // if (($x)?preg_match($x."/\$/i",'',$d):1) 
+         //    $dir_array[ $d ] = $d; 
+            } 
+    } 
+    return $dir_array; 
+} 
+foreach ($data["sys"]["config"]["movie_path"] as $ka =>$rowa ):
+getDirectoryTree($rowa,'flv');
+endforeach;
 
-	$this->load->model("cinepixi/pathFile/pathFile_model");
-	foreach ($data["sys"]["config"]["movie_path"] as $ka =>$rowa ):
-	    // $paths[$rowa]=$this->movie_model->dirToArray_sync($rowa);
-	    // 
-	    // $paths[$rowa]=dirToArray($rowa);
-	    $response=$this->pathFile_model->pathFile_PATHS($rowa);
-	pr($response);
+if(!empty($_SESSION["paths"]))
+foreach($_SESSION["paths"] as $path){
 
-	endforeach;
+	$data_Sync=array("name"=>$path );
+
+	if($this->pathFile_model->sync_same_pathFile($path) )
+    $this->pathFile_model->update_pathFile($data_Sync,0,$path);
+	else
+    $this->pathFile_model->insert_pathFile($data_Sync);
+	
+} 
+// </ OWN>
 
 	if(!empty($_POST["ajax"]))
 	return print_r(json_encode(array("status"=>1,"msg"=>"HtmlConExito","html"=>$this->load->view("cinepixi/pathFile/pathFile_view",$data,true) ))) ;

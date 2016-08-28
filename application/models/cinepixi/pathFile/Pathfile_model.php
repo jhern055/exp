@@ -91,9 +91,14 @@ class Pathfile_model extends CI_Model{
 
     }
 
-    public function update_pathFile($data,$id){
+    public function update_pathFile($data,$id,$path){
         
+        if(!empty($id))
         $this->db->where("id",$id);
+
+        if(!empty($path))
+        $this->db->where("name",$path);
+
         $this->db->update("cinepixi_pathFile",$data);
 
     return $id;
@@ -163,28 +168,39 @@ class Pathfile_model extends CI_Model{
     }
  
  // <OWN>
-    public function pathFile_PATHS($dir) { 
+    public function pathFile_PATHS($dir,$file=null) { 
         
         $k=array();
 
         $cdir = scandir($dir); 
         foreach ($cdir as $key => $value) {
-            if (!in_array($value,array(".",".."))) {
+            if (!in_array($value,array(".",".."))):
 
-                if (is_dir($dir . DIRECTORY_SEPARATOR . $value)) {
-
-                    $k[$value]=$this->pathFile_PATHS($dir . DIRECTORY_SEPARATOR . $value);
-                }else{
-                    
+                if (is_dir($dir . DIRECTORY_SEPARATOR . $value))
+                $k[$value]=$this->pathFile_PATHS($dir . DIRECTORY_SEPARATOR . $value);
+                else if($file)
                     $k[] = $value; 
-                }
+                
             
-            }
+            endif;
         }
 
    return $k; 
 
     } 
+    public function sync_same_pathFile($pathFile){
+        $ac=false;
+
+        $this->db->where("name",$pathFile);
+
+        $row=$this->db->get("cinepixi_pathFile");
+        
+        if($row->num_rows())
+        $ac=true;    
+
+        return $ac;
+    }
+        
  // </ OWN>
 
 }
