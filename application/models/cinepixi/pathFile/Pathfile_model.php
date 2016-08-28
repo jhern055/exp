@@ -144,6 +144,7 @@ class Pathfile_model extends CI_Model{
     if(!empty($data))
     foreach ($data as $k=>&$value):
         $data[$k]["name"]=str_replace(array("\\ ","\\"), " ", $value["name"]);
+        // $data[$k]["name"]=str_replace(array("\\ ","\\","\(","\)"), " ", $value["name"]);
     endforeach;
     
     return $data;

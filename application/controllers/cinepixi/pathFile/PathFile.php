@@ -226,7 +226,7 @@ function getDirectoryTree( $outerDir , $x){
     $dir_array = Array(); 
     foreach( $dirs as $d ){ 
         if( is_dir($outerDir."/".$d)  ){ 
-        	$_SESSION["paths"][$d]=str_replace(" ", "\\ ", $outerDir."/".$d);
+        	$_SESSION["paths"][$d]="\"".str_replace(array(" "), array("\\ ",""), $outerDir."/".$d)."\"";
             $dir_array[ $d ] = getDirectoryTree( $outerDir."/".$d , $x); 
         }else{ 
          // if (($x)?preg_match($x."/\$/i",'',$d):1) 
