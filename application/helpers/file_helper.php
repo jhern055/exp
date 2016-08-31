@@ -504,6 +504,33 @@ function dirToArray($dir) {
 
 }
 // #################################################################
+if ( ! function_exists('dirToArrayFiles'))
+{
+function dirToArrayFiles($dir) { 
+   
+   $result = array(); 
+
+   $cdir = scandir($dir); 
+   foreach ($cdir as $key => $value) 
+   { 
+      if (!in_array($value,array(".",".."))) 
+      { 
+      	
+         if (is_dir($dir . DIRECTORY_SEPARATOR . $value)){
+             $_SESSION["pathFather"]=$dir . DIRECTORY_SEPARATOR . $value;
+             dirToArrayFiles($dir . DIRECTORY_SEPARATOR . $value); 
+         }
+         else {        	
+         	$_SESSION["FilesInPath"][$_SESSION["pathFather"]][]=$value;
+         }
+      } 
+   } 
+   
+   return $result; 
+} 
+
+}
+// #################################################################
 if ( ! function_exists('scandir_folders'))
 {
 	function scandir_folders($d) {
