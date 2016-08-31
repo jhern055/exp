@@ -344,7 +344,6 @@ class Movie extends CI_Controller {
 	//     $response=$this->movie_model->insert_update_movie_category_sync($rowa);
 	// endforeach;
 
-	// pr($response);
 $_SESSION["pathFather"]="";
 $_SESSION["FilesInPath"]="";
 	foreach ($data["sys"]["config"]["movie_path"] as $ka =>$rowa ):

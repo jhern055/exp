@@ -509,19 +509,19 @@ if ( ! function_exists('dirToArrayFiles'))
 function dirToArrayFiles($dir) { 
    
    $result = array(); 
-
    $cdir = scandir($dir); 
    foreach ($cdir as $key => $value) 
    { 
       if (!in_array($value,array(".",".."))) 
       { 
-      	
          if (is_dir($dir . DIRECTORY_SEPARATOR . $value)){
-             $_SESSION["pathFather"]=$dir . DIRECTORY_SEPARATOR . $value;
+             // $_SESSION["pathFather"]=$dir . DIRECTORY_SEPARATOR . $value;
              dirToArrayFiles($dir . DIRECTORY_SEPARATOR . $value); 
+
          }
          else {        	
-         	$_SESSION["FilesInPath"][$_SESSION["pathFather"]][]=$value;
+         	$_SESSION["FilesInPath"][]=$value;
+         	// $_SESSION["FilesInPath"][$_SESSION["pathFather"]][]=$value;
          }
       } 
    } 
