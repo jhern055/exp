@@ -100,7 +100,5 @@ ALTER TABLE `opening_balance_payments`
 
 
 
-
-
 -- LOCAL --PRODUCCION
 ALTER TABLE  `cinepixi_movie` ADD  `pathFile_id` INT NOT NULL AFTER  `category_id` ;
