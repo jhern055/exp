@@ -271,7 +271,10 @@ foreach($_SESSION["paths"] as $path){
 	$this->load->model("cinepixi/pathFile/pathFile_model");
 	$path_folder=$this->pathFile_model->get_cinepixi_pathFile_to_option(null,"");
 
-	if(!empty($path_folder))
+	if(count($path_folder)!=$_SESSION["foreach_path"]))
+	$_SESSION["foreach_path"]="";
+	
+	if(!empty($path_folder) and count($path_folder)!=$_SESSION["foreach_path"])
 	foreach ($path_folder as $key => $path) {
 				// insertarmos en movie o aztualizamos
 
@@ -298,13 +301,14 @@ foreach($_SESSION["paths"] as $path){
 				$this->pathFile_model->record_same_file($data_process_file,$key);	    			
 
 	    		}else {
-	    			
+
 	    			// aplicamos un insert
 					$this->pathFile_model->insert_movie_file($data_process_file);	    			
 	    		}
 
 			endif;
 		}
+	$_SESSION["foreach_path"]++;
 	}
 
 // </ OWN>
