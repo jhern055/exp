@@ -271,9 +271,9 @@ foreach($_SESSION["paths"] as $path){
 	$this->load->model("cinepixi/pathFile/pathFile_model");
 	$path_folder=$this->pathFile_model->get_cinepixi_pathFile_to_option(null,"");
 
-	if(count($path_folder)!=$_SESSION["foreach_path"]))
+	if(count($path_folder)!=$_SESSION["foreach_path"])
 	$_SESSION["foreach_path"]="";
-	
+
 	if(!empty($path_folder) and count($path_folder)!=$_SESSION["foreach_path"])
 	foreach ($path_folder as $key => $path) {
 				// insertarmos en movie o aztualizamos
