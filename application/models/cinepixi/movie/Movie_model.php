@@ -77,7 +77,6 @@ class Movie_model extends CI_Model{
         "id"          =>"",
         "name"        =>"",
         "category_id" =>"",
-        "pathFile_id" =>"",
         );
         
     $q=$this->db->select(implode(",", array_keys($data)))
@@ -157,21 +156,6 @@ class Movie_model extends CI_Model{
 // </Get>
 
 // <OWN>
-    public function insert_movie_file($data){
-
-    $this->db->insert("cinepixi_movie_file",$data);
-        
-    return $this->db->insert_id();;
-    } 
-
-    public function delete_movie_file($id){
-
-        $this->db->where("id",$id);
-        if($this->db->delete("cinepixi_movie_file"))
-        return true;
-    }     
-// </OWN>
-// <OWN>
     public function select_movie_category($name){
 
     $data=array("id"=>0);
@@ -227,6 +211,36 @@ class Movie_model extends CI_Model{
 
    return $k; 
 
+    } 
+
+
+    // mismo registro
+    public function record_same_file($data){
+        $ac=false;
+
+        // if(!empty($id))
+        // $this->db->where_not_in("id",$id);
+
+        $this->db->where($data);
+        $row=$this->db->get("cinepixi_movie_file");
+        
+        if($row->num_rows())
+        $ac=true;    
+
+        return $ac;
+    }
+    public function insert_movie_file($data){
+
+    $this->db->insert("cinepixi_movie_file",$data);
+        
+    return $this->db->insert_id();;
+    } 
+
+    public function delete_movie_file($id){
+
+        $this->db->where("id",$id);
+        if($this->db->delete("cinepixi_movie_file"))
+        return true;
     } 
 // </OWN>
 

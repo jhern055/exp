@@ -250,7 +250,63 @@ foreach($_SESSION["paths"] as $path){
 	else
     $this->pathFile_model->insert_pathFile($data_Sync);
 	
-} 
+}
+
+
+	// <OWN>
+	$this->load->helper("file");
+	// foreach ($data["sys"]["config"]["movie_path"] as $ka =>$rowa ):
+	//     // $paths[$rowa]=$this->movie_model->dirToArray_sync($rowa);
+	//     // 
+	//     // $paths[$rowa]=dirToArray($rowa);
+	//     $response=$this->movie_model->insert_update_movie_category_sync($rowa);
+	// endforeach;
+
+	foreach ($data["sys"]["config"]["movie_path"] as $ka =>$rowa ):
+	    // $paths[$rowa]=$this->movie_model->dirToArray_sync($rowa);
+	    // 
+	    // $paths[$rowa]=dirToArray($rowa);
+	    $response=dirToArrayFiles($rowa);
+	endforeach;
+	$this->load->model("cinepixi/pathFile/pathFile_model");
+	$path_folder=$this->pathFile_model->get_cinepixi_pathFile_to_option(null,"");
+
+	if(!empty($path_folder))
+	foreach ($path_folder as $key => $path) {
+				// insertarmos en movie o aztualizamos
+
+		// if($pathFile_data=$this->pathFile_model->sync_same_pathFile($path)):
+		//     $this->pathFile_model->update_pathFile($data_Sync,0,$path);
+
+		//   $this->pathFile_model->insert_pathFile($data_Sync);
+
+		// 	else:
+		// 	$pathFile_data["id"]=
+		// endif;
+
+		foreach ($_SESSION["FilesInPath"] as $kb => $file) {
+			if(file_exists($path."/".$file) ):
+				$data_process_file=array(
+					"file_name"  =>$file,
+					"resolution" =>"",
+					"pathFile_id"   =>$key,
+				);
+
+				// validar si ya existe la relacion con el path
+	    		if($this->pathFile_model->record_same_file($data_process_file)){
+	    			// aplicamos un update
+				$this->pathFile_model->record_same_file($data_process_file,$key);	    			
+
+	    		}else {
+	    			
+	    			// aplicamos un insert
+					$this->pathFile_model->insert_movie_file($data_process_file);	    			
+	    		}
+
+			endif;
+		}
+	}
+
 // </ OWN>
 
 	if(!empty($_POST["ajax"]))

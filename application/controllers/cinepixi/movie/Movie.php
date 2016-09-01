@@ -335,29 +335,6 @@ class Movie extends CI_Controller {
 	// if(!empty($this->page) and !empty($data["records_array"]))
 	// $this->session->set_userdata('record_start_row_movie',$this->page);
 
-	// <OWN>
-	$this->load->helper("file");
-	// foreach ($data["sys"]["config"]["movie_path"] as $ka =>$rowa ):
-	//     // $paths[$rowa]=$this->movie_model->dirToArray_sync($rowa);
-	//     // 
-	//     // $paths[$rowa]=dirToArray($rowa);
-	//     $response=$this->movie_model->insert_update_movie_category_sync($rowa);
-	// endforeach;
-
-$_SESSION["pathFather"]="";
-$_SESSION["FilesInPath"]="";
-	foreach ($data["sys"]["config"]["movie_path"] as $ka =>$rowa ):
-	    // $paths[$rowa]=$this->movie_model->dirToArray_sync($rowa);
-	    // 
-	    // $paths[$rowa]=dirToArray($rowa);
-	    $response=dirToArrayFiles($rowa);
-	endforeach;
-	pr($_SESSION["FilesInPath"]);
-
-	// </ OWN>
-
-	// pr($response);
-
 	if(!empty($_POST["ajax"]))
 	return print_r(json_encode(array("status"=>1,"msg"=>"HtmlConExito","html"=>$this->load->view("cinepixi/movie/movie_view",$data,true) ))) ;
 	else

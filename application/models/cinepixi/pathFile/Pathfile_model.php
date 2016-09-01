@@ -197,17 +197,61 @@ class Pathfile_model extends CI_Model{
     } 
     public function sync_same_pathFile($pathFile){
         $ac=false;
+        $data=array();
 
         $this->db->where("name",$pathFile);
 
         $row=$this->db->get("cinepixi_pathFile");
         
+        if($row->num_rows()){
+        $ac=true;    
+         
+            foreach ($row->result_array() as $key => $value):
+                $data=$value;
+            endforeach;
+        }
+
+
+        return $data;
+    }  
+
+    // mismo registro
+    public function record_same_file($data){
+        $ac=false;
+
+        // if(!empty($id))
+        // $this->db->where_not_in("id",$id);
+
+        $this->db->where($data);
+        $row=$this->db->get("cinepixi_file");
+        
         if($row->num_rows())
         $ac=true;    
 
         return $ac;
-    }  
+    }
+
+    public function update_movie_file($data,$id){
+
+    $this->db->where($id);
+    $this->db->update("cinepixi_file",$data);
     
+    return $id;
+    } 
+
+    public function insert_movie_file($data){
+
+    $this->db->insert("cinepixi_file",$data);
+        
+    return $this->db->insert_id();;
+    } 
+
+    public function delete_movie_file($id){
+
+        $this->db->where("id",$id);
+        if($this->db->delete("cinepixi_file"))
+        return true;
+    } 
  // </ OWN>
 
 }
