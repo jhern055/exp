@@ -265,13 +265,16 @@ foreach($_SESSION["paths"] as $path){
 	foreach ($data["sys"]["config"]["movie_path"] as $ka =>$rowa ):
 	    // $paths[$rowa]=$this->movie_model->dirToArray_sync($rowa);
 	    // 
+
 	    // $paths[$rowa]=dirToArray($rowa);
-	    $response=dirToArrayFiles($rowa);
+	    // $response=dirToArrayFiles($rowa);
+	    $response=dirToArrayFiles("/media/dell/67F18E800D673AB3/musica");
+
 	endforeach;
 	$this->load->model("cinepixi/pathFile/pathFile_model");
 	$path_folder=$this->pathFile_model->get_cinepixi_pathFile_to_option(null,"");
 
-
+pr($response);
 	if(!empty($path_folder))
 	foreach ($path_folder as $key => $path) {
 				// insertarmos en movie o aztualizamos

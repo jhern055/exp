@@ -48,10 +48,17 @@ function API.is_dir( sPath )
   if type( sPath ) ~= "string" then return false end
 
   local response = os.execute("cd ".. sPath)
-  if response == 1 then
+
+  -- if response then
+
+  -- ngx.say("cd ".. sPath)
+  -- return ngx.say(cjson.encode(response))
+  -- end
+
+  if response == 0 then
     return true
   end
-  return  "cd ".. sPath
+  return  false
 end
 
 -- Lua implementation of PHP scandir function
@@ -89,14 +96,75 @@ function API.get_Paths(path)
 
     if not _.contains(exclude,filetab_row) then
 
-      if(API.is_dir(path.."/"..filetab_row) )then
+      tmp_path=filetab_row
+      tmp_path=tmp_path:gsub("% ", "\\ ")
+      tmp_path=tmp_path:gsub("%(", "\\(")
+      tmp_path=tmp_path:gsub("%)", "\\)")
+      tmp_path=tmp_path:gsub("%-", "\\-")
 
-      result[filetab_row]=API.get_Paths(path.."/"..filetab_row)
+  --   if filetab_row then
+  -- return ngx.say(path.."/"..filetab_row)
+  --   end
+local un_tmp_path=""
+      if(API.is_dir(path.."/"..tmp_path) )then
+
+      result[filetab_row]=API.get_Paths(path.."/"..tmp_path)
+  -- ngx.say(path.."/"..filetab_row)
+
+-- ----------------------------------------------------------------
+            un_tmp_path=path.."/"..tmp_path
+            un_tmp_path=un_tmp_path:gsub("%\\", "")
+
+      local qrySelect = string.format([[SELECT * FROM exp.cinepixi_pathFile WHERE name = "%s";]], un_tmp_path )
+
+      local SelectCursor, errorString = db:send_query( qrySelect )
+      local dataSelect, err, errno, sqlstate = db:read_result(SelectCursor)
+
+      if err then
+      return ngx.say(cjson.encode({["status"] =0,["error"] = "Error al seleccionar cinepixi_pathFile"}))
+      end
+
+      local recordFather
+        if _.size(dataSelect) > 1 then
+          -- Update
+            -- local qryUpdate = string.format([[UPDATE exp.cinepixi_pathFile SET name= "%s" WHERE name = "%s";]],
+            --  path.."/"..filetab_row, 
+            --  path.."/"..filetab_row 
+            --  )
+
+            local qryUpdate = "UPDATE exp.cinepixi_pathFile SET name= \""..un_tmp_path.."\" WHERE name = \""..un_tmp_path.."\";"
+
+            local SelectCursor, errorString = db:send_query( qryUpdate )
+                  recordFather, err, errno, sqlstate = db:read_result(SelectCursor)
+
+            if qryUpdate then
+              return ngx.say(qryUpdate)
+            -- return ngx.say(cjson.encode({["status"] =0,["error"] = "Error al actualizar cinepixi_pathFile"}))
+            end
+
+        else
+          -- Insert
+            local qryInsert = string.format([[INSERT exp.cinepixi_pathFile SET name= "%s";]],
+             un_tmp_path, 
+             un_tmp_path 
+             )
+
+            local SelectCursor, errorString = db:send_query( qryInsert )
+                  recordFather, err, errno, sqlstate = db:read_result(SelectCursor)
+
+            if err then
+            return ngx.say(cjson.encode({["status"] =0,["error"] = "Error al insertar cinepixi_pathFile"}))
+            end
+
+        end
+-- ----------------------------------------------------------------
+
 
       else
 
- --  ngx.say(cjson.encode(filetab))
---   ngx.say(filetab_row)
+  -- ngx.say(cjson.encode(filetab))
+  -- ngx.say(path.."/"..tmp_path)
+
       result[filetab_row]=filetab_row
 
       end
@@ -110,12 +178,13 @@ end
 
 function API.syn_Paths(params)
   local db = ngx.ctx.mysql or _mysql_connect()
+  -- local art_dir ="/media/dell/67F18E800D673AB3/musica"
   local art_dir ="/mnt/DATA"
 
   filetab = API.get_Paths(art_dir)
 
-   ngx.say(cjson.encode(filetab))
-  return ngx.exit(ngx.HTTP_OK)  
+   -- ngx.say(cjson.encode(filetab))
+  -- return ngx.exit(ngx.HTTP_OK)  
 end
 
 -- function API.msg(m)
