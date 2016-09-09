@@ -84,6 +84,25 @@ function API.scandir(dirname)
 end
 
 -- ############################################################### 
+function API.exists(name)
+    if type(name)~="string" then return false end
+    return os.rename(name,name) and true or false
+end
+
+function API.isFile(name)
+    if type(name)~="string" then return false end
+    if not API.exists(name) then return false end
+    local f = io.open(name)
+    if f then
+        f:close()
+        return true
+    end
+    return false
+end
+
+function API.isDir(name)
+    return (API.exists(name) and not API.isFile(name))
+end
 
 function API.get_Paths(path)
   local db = ngx.ctx.mysql or _mysql_connect()
@@ -96,6 +115,8 @@ function API.get_Paths(path)
 
     if not _.contains(exclude,filetab_row) then
 
+      local tmp_path=""
+
       tmp_path=filetab_row
       tmp_path=tmp_path:gsub("% ", "\\ ")
       tmp_path=tmp_path:gsub("%(", "\\(")
@@ -105,13 +126,18 @@ function API.get_Paths(path)
   --   if filetab_row then
   -- return ngx.say(path.."/"..filetab_row)
   --   end
-local un_tmp_path=""
-      if(API.is_dir(path.."/"..tmp_path) )then
+  -- ngx.say(tmp_path)
+  -- ngx.say(API.scandir(filetab_row))
+
+      -- if(API.is_dir(path.."/"..tmp_path) )then
+
+      if(API.isFile(path.."/"..tmp_path) or API.is_dir(path.."/"..tmp_path) )then
 
       result[filetab_row]=API.get_Paths(path.."/"..tmp_path)
   -- ngx.say(path.."/"..filetab_row)
 
 -- ----------------------------------------------------------------
+            local un_tmp_path=""
             un_tmp_path=path.."/"..tmp_path
             un_tmp_path=un_tmp_path:gsub("%\\", "")
 
@@ -120,12 +146,16 @@ local un_tmp_path=""
       local SelectCursor, errorString = db:send_query( qrySelect )
       local dataSelect, err, errno, sqlstate = db:read_result(SelectCursor)
 
+  --     if qrySelect then
+  -- ngx.say(qrySelect)
+
+  --     end
       if err then
       return ngx.say(cjson.encode({["status"] =0,["error"] = "Error al seleccionar cinepixi_pathFile"}))
       end
 
       local recordFather
-        if _.size(dataSelect) > 1 then
+        if _.size(dataSelect) >= 1 then
           -- Update
             -- local qryUpdate = string.format([[UPDATE exp.cinepixi_pathFile SET name= "%s" WHERE name = "%s";]],
             --  path.."/"..filetab_row, 
@@ -138,14 +168,13 @@ local un_tmp_path=""
                   recordFather, err, errno, sqlstate = db:read_result(SelectCursor)
 
             if qryUpdate then
-              return ngx.say(qryUpdate)
+              -- return ngx.say(qryUpdate)
             -- return ngx.say(cjson.encode({["status"] =0,["error"] = "Error al actualizar cinepixi_pathFile"}))
             end
 
         else
           -- Insert
             local qryInsert = string.format([[INSERT exp.cinepixi_pathFile SET name= "%s";]],
-             un_tmp_path, 
              un_tmp_path 
              )
 
@@ -159,11 +188,19 @@ local un_tmp_path=""
         end
 -- ----------------------------------------------------------------
 
+  -- ngx.say(un_tmp_path)
+  -- ngx.say(os.execute("ls -1 "..path.."/"..tmp_path))
+
 
       else
 
+            -- un_tmp_path=path.."/"..tmp_path
+            -- un_tmp_path=un_tmp_path:gsub("%\\", "")
   -- ngx.say(cjson.encode(filetab))
+
   -- ngx.say(path.."/"..tmp_path)
+  -- ngx.say(API.is_dir(path.."/"..tmp_path))
+      -- if(API.is_dir(path.."/"..tmp_path) )then
 
       result[filetab_row]=filetab_row
 
