@@ -144,18 +144,14 @@ function API.get_Paths(path)
       local qrySelect = string.format([[SELECT * FROM exp.cinepixi_pathFile WHERE name = "%s";]], un_tmp_path )
 
       local SelectCursor, errorString = db:send_query( qrySelect )
-      local dataSelect, err, errno, sqlstate = db:read_result(SelectCursor)
+            recordFather, err, errno, sqlstate = db:read_result(SelectCursor)
 
-  --     if qrySelect then
-  -- ngx.say(qrySelect)
 
-  --     end
       if err then
       return ngx.say(cjson.encode({["status"] =0,["error"] = "Error al seleccionar cinepixi_pathFile"}))
       end
 
-      local recordFather
-        if _.size(dataSelect) >= 1 then
+        if _.size(recordFather) >= 1 then
           -- Update
             -- local qryUpdate = string.format([[UPDATE exp.cinepixi_pathFile SET name= "%s" WHERE name = "%s";]],
             --  path.."/"..filetab_row, 
@@ -165,7 +161,7 @@ function API.get_Paths(path)
             local qryUpdate = "UPDATE exp.cinepixi_pathFile SET name= \""..un_tmp_path.."\" WHERE name = \""..un_tmp_path.."\";"
 
             local SelectCursor, errorString = db:send_query( qryUpdate )
-                  recordFather, err, errno, sqlstate = db:read_result(SelectCursor)
+            local recordUpdate, err, errno, sqlstate = db:read_result(SelectCursor)
 
             if qryUpdate then
               -- return ngx.say(qryUpdate)
@@ -190,19 +186,57 @@ function API.get_Paths(path)
 
   -- ngx.say(un_tmp_path)
   -- ngx.say(os.execute("ls -1 "..path.."/"..tmp_path))
-
-
+  
       else
+-- #########################   ELSE ################################## 
 
-            -- un_tmp_path=path.."/"..tmp_path
-            -- un_tmp_path=un_tmp_path:gsub("%\\", "")
-  -- ngx.say(cjson.encode(filetab))
 
-  -- ngx.say(path.."/"..tmp_path)
-  -- ngx.say(API.is_dir(path.."/"..tmp_path))
-      -- if(API.is_dir(path.."/"..tmp_path) )then
+      -- local qrySelect = string.format([[SELECT * FROM exp.cinepixi_pathFile WHERE name = "%s";]], un_tmp_path )
+
+      -- local SelectCursor, errorString = db:send_query( qrySelect )
+      -- local recordFather, err, errno, sqlstate = db:read_result(SelectCursor)
+
+
+      -- if err then
+      -- return ngx.say(cjson.encode({["status"] =0,["error"] = "Error al seleccionar cinepixi_pathFile"}))
+      -- end
+
+      --   if _.size(dataSelect) >= 1 then
+      --     -- Update
+      --       -- local qryUpdate = string.format([[UPDATE exp.cinepixi_pathFile SET name= "%s" WHERE name = "%s";]],
+      --       --  path.."/"..filetab_row, 
+      --       --  path.."/"..filetab_row 
+      --       --  )
+
+      --       local qryUpdate = "UPDATE exp.cinepixi_pathFile SET name= \""..un_tmp_path.."\" WHERE name = \""..un_tmp_path.."\";"
+
+      --       local SelectCursor, errorString = db:send_query( qryUpdate )
+      --             recordFather, err, errno, sqlstate = db:read_result(SelectCursor)
+
+      --       if qryUpdate then
+      --         -- return ngx.say(qryUpdate)
+      --       -- return ngx.say(cjson.encode({["status"] =0,["error"] = "Error al actualizar cinepixi_pathFile"}))
+      --       end
+
+      --   else
+      --     -- Insert
+      --       local qryInsert = string.format([[INSERT exp.cinepixi_pathFile SET name= "%s";]],
+      --        un_tmp_path 
+      --        )
+
+      --       local SelectCursor, errorString = db:send_query( qryInsert )
+      --             recordFather, err, errno, sqlstate = db:read_result(SelectCursor)
+
+      --       if err then
+      --       return ngx.say(cjson.encode({["status"] =0,["error"] = "Error al insertar cinepixi_pathFile"}))
+      --       end
+
+      --   end
 
       result[filetab_row]=filetab_row
+
+-- ----------------------------------------------------------------
+-- ############################  FIN ELSE ##################################
 
       end
 
