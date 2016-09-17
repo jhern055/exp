@@ -220,41 +220,41 @@ class PathFIle extends CI_Controller {
 	// $this->session->set_userdata('record_start_row_pathFile',$this->page);
 
 // <OWN>
-$_SESSION["paths"]="";
-function getDirectoryTree( $outerDir , $x){ 
-    $dirs = array_diff( scandir( $outerDir ), Array( ".", ".." ) ); 
-    $dir_array = Array(); 
-    foreach( $dirs as $d ){ 
-        if( is_dir($outerDir."/".$d)  ){ 
-        	$_SESSION["paths"][$d]= $outerDir."/".$d;
-        	// $_SESSION["paths"][$d]="\"".str_replace(array(" "), array("\\ ",""), $outerDir."/".$d)."\"";
-            $dir_array[ $d ] = getDirectoryTree( $outerDir."/".$d , $x); 
-        }else{ 
-         // if (($x)?preg_match($x."/\$/i",'',$d):1) 
-         //    $dir_array[ $d ] = $d; 
-            } 
-    } 
-    return $dir_array; 
-} 
-foreach ($data["sys"]["config"]["movie_path"] as $ka =>$rowa ):
-getDirectoryTree($rowa,'flv');
-endforeach;
+// $_SESSION["paths"]="";
+// function getDirectoryTree( $outerDir , $x){ 
+//     $dirs = array_diff( scandir( $outerDir ), Array( ".", ".." ) ); 
+//     $dir_array = Array(); 
+//     foreach( $dirs as $d ){ 
+//         if( is_dir($outerDir."/".$d)  ){ 
+//         	$_SESSION["paths"][$d]= $outerDir."/".$d;
+//         	// $_SESSION["paths"][$d]="\"".str_replace(array(" "), array("\\ ",""), $outerDir."/".$d)."\"";
+//             $dir_array[ $d ] = getDirectoryTree( $outerDir."/".$d , $x); 
+//         }else{ 
+//          // if (($x)?preg_match($x."/\$/i",'',$d):1) 
+//          //    $dir_array[ $d ] = $d; 
+//             } 
+//     } 
+//     return $dir_array; 
+// } 
+// foreach ($data["sys"]["config"]["movie_path"] as $ka =>$rowa ):
+// getDirectoryTree($rowa,'flv');
+// endforeach;
 
-if(!empty($_SESSION["paths"]))
-foreach($_SESSION["paths"] as $path){
+// if(!empty($_SESSION["paths"]))
+// foreach($_SESSION["paths"] as $path){
 
-	$data_Sync=array("name"=>$path );
+// 	$data_Sync=array("name"=>$path );
 
-	if($this->pathFile_model->sync_same_pathFile($path) )
-    $this->pathFile_model->update_pathFile($data_Sync,0,$path);
-	else
-    $this->pathFile_model->insert_pathFile($data_Sync);
+// 	if($this->pathFile_model->sync_same_pathFile($path) )
+//     $this->pathFile_model->update_pathFile($data_Sync,0,$path);
+// 	else
+//     $this->pathFile_model->insert_pathFile($data_Sync);
 	
-}
+// }
 
 
 	// <OWN>
-	$this->load->helper("file");
+	// $this->load->helper("file");
 	// foreach ($data["sys"]["config"]["movie_path"] as $ka =>$rowa ):
 	//     // $paths[$rowa]=$this->movie_model->dirToArray_sync($rowa);
 	//     // 
@@ -262,21 +262,21 @@ foreach($_SESSION["paths"] as $path){
 	//     $response=$this->movie_model->insert_update_movie_category_sync($rowa);
 	// endforeach;
 
-	foreach ($data["sys"]["config"]["movie_path"] as $ka =>$rowa ):
+	// foreach ($data["sys"]["config"]["movie_path"] as $ka =>$rowa ):
 	    // $paths[$rowa]=$this->movie_model->dirToArray_sync($rowa);
 	    // 
 
 	    // $paths[$rowa]=dirToArray($rowa);
 	    // $response=dirToArrayFiles($rowa);
-	    $response=dirToArrayFiles("/media/dell/67F18E800D673AB3/musica");
+	    // $response=dirToArrayFiles("/media/dell/67F18E800D673AB3/musica");
 
-	endforeach;
-	$this->load->model("cinepixi/pathFile/pathFile_model");
-	$path_folder=$this->pathFile_model->get_cinepixi_pathFile_to_option(null,"");
+	// endforeach;
+	// $this->load->model("cinepixi/pathFile/pathFile_model");
+	// $path_folder=$this->pathFile_model->get_cinepixi_pathFile_to_option(null,"");
 
-pr($response);
-	if(!empty($path_folder))
-	foreach ($path_folder as $key => $path) {
+// pr($response);
+	// if(!empty($path_folder))
+	// foreach ($path_folder as $key => $path) {
 				// insertarmos en movie o aztualizamos
 
 		// if($pathFile_data=$this->pathFile_model->sync_same_pathFile($path)):
@@ -288,29 +288,29 @@ pr($response);
 		// 	$pathFile_data["id"]=
 		// endif;
 
-		foreach ($_SESSION["FilesInPath"] as $kb => $file) {
-			if(file_exists($path."/".$file) ):
-				$data_process_file=array(
-					"file_name"  =>$file,
-					"resolution" =>"",
-					"pathFile_id"   =>$key,
-				);
+	// 	foreach ($_SESSION["FilesInPath"] as $kb => $file) {
+	// 		if(file_exists($path."/".$file) ):
+	// 			$data_process_file=array(
+	// 				"file_name"  =>$file,
+	// 				"resolution" =>"",
+	// 				"pathFile_id"   =>$key,
+	// 			);
 
-				// validar si ya existe la relacion con el path
-	    		if($this->pathFile_model->record_same_file($data_process_file)){
-	    			// aplicamos un update
-				$this->pathFile_model->record_same_file($data_process_file,$key);	    			
+	// 			// validar si ya existe la relacion con el path
+	//     		if($this->pathFile_model->record_same_file($data_process_file)){
+	//     			// aplicamos un update
+	// 			$this->pathFile_model->record_same_file($data_process_file,$key);	    			
 
-	    		}else {
+	//     		}else {
 
-	    			// aplicamos un insert
-					$this->pathFile_model->insert_movie_file($data_process_file);	    			
-	    		}
+	//     			// aplicamos un insert
+	// 				$this->pathFile_model->insert_movie_file($data_process_file);	    			
+	//     		}
 
-			endif;
-		}
-	$_SESSION["foreach_path"]++;
-	}
+	// 		endif;
+	// 	}
+	// $_SESSION["foreach_path"]++;
+	// }
 
 // </ OWN>
 
