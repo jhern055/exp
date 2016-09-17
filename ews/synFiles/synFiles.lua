@@ -225,6 +225,7 @@ function API.get_Paths(path)
       -- end
 
 -- -----------------------------------------
+      if _.size(pathFile_id) >= 1 then
 
       local qrySelect = string.format([[SELECT * FROM exp.cinepixi_file WHERE file_name = "%s" and pathFile_id = %u;]], un_tmp_path,pathFile_id[1]["id"] )
 
@@ -268,6 +269,7 @@ function API.get_Paths(path)
 
       result[filetab_row]=filetab_row
 
+      end -- </ if _.size(pathFile_id) >= 1 then >
 -- ----------------------------------------------------------------
 -- ############################  FIN ELSE ##################################
 
