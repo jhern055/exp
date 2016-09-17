@@ -1305,6 +1305,58 @@ _.cleanSqli = function(var)
   return quoted_var
 end
 
+
+-- Split function 
+-- _.split = function(s, pattern, maxsplit)
+--   local pattern = pattern or ' '
+--   local maxsplit = maxsplit or -1
+--   local s = s
+--   local t = {}
+--   local patsz = #pattern
+--   while maxsplit ~= 0 do
+--     local curpos = 1
+--     local found = string.find(s, pattern)
+--     if found ~= nil then
+--       table.insert(t, string.sub(s, curpos, found - 1))
+--       curpos = found + patsz
+--       s = string.sub(s, curpos)
+--     else
+--       table.insert(t, string.sub(s, curpos))
+--       break
+--     end
+--     maxsplit = maxsplit - 1
+--     if maxsplit == 0 then
+--       table.insert(t, string.sub(s, curpos - patsz - 1))
+--     end
+--   end
+--   return t
+-- end
+
+_.split=function(str, pat)
+   local t = {}  -- NOTE: use {n = 0} in Lua-5.0
+   local fpat = "(.-)" .. pat
+   local last_end = 1
+   local s, e, cap = str:find(fpat, 1)
+   while s do
+      if s ~= 1 or cap ~= "" then
+   table.insert(t,cap)
+      end
+      last_end = e+1
+      s, e, cap = str:find(fpat, last_end)
+   end
+   if last_end <= #str then
+      cap = str:sub(last_end)
+      table.insert(t, cap)
+   end
+   return t
+end
+
+_.implode=function(array, pat)
+   local t = ""
+    t=table.concat(array, pat)
+   return t
+end
+
 -------------------------------------------------------------------------------
 --[[ INDEX  ( NYI == NOT YET IMPLEMENTED )
 -------------------------------------------------------------------------------
